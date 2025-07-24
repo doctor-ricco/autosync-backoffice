@@ -320,12 +320,20 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the avatar URL or generate initials.
+     * Get the avatar URL for this user.
+     */
+    public function getAvatarUrl(): string
+    {
+        return $this->avatar_url ?? "https://ui-avatars.com/api/?name=" . urlencode($this->name) . "&color=7C3AED&background=EBF4FF";
+    }
+
+    /**
+     * Get the avatar URL attribute (accessor).
      */
     public function getAvatarUrlAttribute(): string
     {
-        if ($this->avatar_url) {
-            return $this->avatar_url;
+        if (!empty($this->attributes['avatar_url'])) {
+            return $this->attributes['avatar_url'];
         }
 
         // Generate a placeholder avatar with initials
@@ -337,7 +345,7 @@ class User extends Authenticatable
      */
     public function hasAvatar(): bool
     {
-        return !empty($this->avatar_url);
+        return !empty($this->attributes['avatar_url']);
     }
 
     /**
